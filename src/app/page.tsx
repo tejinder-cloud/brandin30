@@ -235,7 +235,7 @@ export default function Home() {
         <div className={`${wrap} border-t-2 border-ink pt-10`}>
           <p className="display text-[clamp(32px,7vw,52px)]">Okay, that’s the whole pitch.</p>
           <div className="mt-6 flex flex-col gap-2 text-[14.5px] font-medium text-rust sm:flex-row sm:justify-between">
-            <span>A product of The Growth Lab · Mohali, Punjab</span>
+            <span>A product of The Growth Lab</span>
             <span>© 2026 BrandIn30</span>
           </div>
         </div>

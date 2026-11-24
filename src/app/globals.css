@@ -1,16 +1,51 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+
+/* Brand colours. Saffron and ink are the two canvases; everything else supports them. */
+:root {
+  --ink: #0c0c0c;
+  --coal: #151515;
+  --line: #2a2a2a;
+  --cream: #f5f0e8;
+  --mist: #a8a8a0;
+  --saffron: #ff7a00;
+  --saffron-soft: #ffb870;
+  --ember: #2a1a08;
+  /* Text that sits on saffron: a dark shade of the same hue, never grey. */
+  --rust: #3d1d00;
+}
 
 @theme inline {
   --font-sans: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Syne Variable', 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
-  --color-ink: #0c0c0c;
-  --color-coal: #151515;
-  --color-line: #2a2a2a;
-  --color-cream: #f5f0e8;
-  --color-mist: #a8a8a0;
-  --color-saffron: #ff7a00;
-  --color-saffron-soft: #ffb870;
-  --color-ember: #2a1a08;
+  --font-display: 'Bricolage Grotesque Variable', 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: var(--ink);
+  --color-coal: var(--coal);
+  --color-line: var(--line);
+  --color-cream: var(--cream);
+  --color-mist: var(--mist);
+  --color-saffron: var(--saffron);
+  --color-saffron-soft: var(--saffron-soft);
+  --color-ember: var(--ember);
+  --color-rust: var(--rust);
+
+  /* The names shadcn/ui components expect, pointed at the brand colours. */
+  --color-background: var(--ink);
+  --color-foreground: var(--cream);
+  --color-card: var(--coal);
+  --color-card-foreground: var(--cream);
+  --color-primary: var(--saffron);
+  --color-primary-foreground: var(--ink);
+  --color-secondary: #1f1f1f;
+  --color-secondary-foreground: var(--cream);
+  --color-muted: #1f1f1f;
+  --color-muted-foreground: var(--mist);
+  --color-accent: var(--ember);
+  --color-accent-foreground: var(--saffron-soft);
+  --color-destructive: #ff8a7a;
+  --color-border: var(--line);
+  --color-input: #5c5c56;
+  --color-ring: var(--saffron-soft);
 }
 
 html {
@@ -22,30 +57,47 @@ body {
   font-family: var(--font-sans);
 }
 
+/* Poster headings: the condensed cut of Bricolage, so big type fits a phone column. */
+@utility display {
+  font-family: var(--font-display);
+  font-stretch: 75%;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+  text-wrap: balance;
+}
+
+/* Landing page only: one clear focus ring. Cream-orange on ink, ink on saffron. */
+.site :focus-visible {
+  outline: 2px solid var(--saffron-soft);
+  outline-offset: 3px;
+}
+.site .on-saffron :focus-visible {
+  outline-color: var(--ink);
+}
+.site .on-saffron .on-ink :focus-visible {
+  outline-color: var(--saffron-soft);
+}
+
+/* The hero settles into place once on load. Content is visible without it. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.site .rise {
+  animation: rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Landing page only: one clear focus ring on the dark background. */
-.site :focus-visible {
-  outline: 2px solid #ffb870;
-  outline-offset: 3px;
-  border-radius: 6px;
-}
-
-.site details > summary {
-  list-style: none;
-  cursor: pointer;
-}
-.site details > summary::-webkit-details-marker {
-  display: none;
-}
-.site details[open] .faq-plus {
-  transform: rotate(45deg);
 }

@@ -5,13 +5,17 @@
 
 import { useEffect, useState } from 'react'
 import { Check, Loader2 } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { db } from '@/lib/supabase'
 import { BUSINESS_TYPES, PRICES, rupee, type PlanKey } from '@/lib/site'
 
 const PLANS: { key: PlanKey; label: string }[] = [
-  { key: 'complete', label: `Complete Kit, founding price ${rupee(PRICES.founding)}` },
+  { key: 'complete', label: `Complete Kit, ${rupee(PRICES.founding)}` },
   { key: 'starter', label: `Starter, ${rupee(PRICES.starter)}` },
-  { key: 'website', label: `Kit + Website, ${rupee(PRICES.website)} a month` },
+  { key: 'website', label: `Kit + Website, ${rupee(PRICES.website)}/month` },
 ]
 
 const tenDigits = (raw: string) => {
@@ -73,57 +77,56 @@ export function WaitlistForm() {
 
   if (done) {
     return (
-      <div className="flex flex-col items-start gap-3 rounded-2xl border border-[#4a2f10] bg-ember p-6" role="status">
+      <div className="flex flex-col items-start gap-3 rounded-xl bg-ember p-6" role="status">
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-saffron text-ink"><Check className="h-5 w-5" aria-hidden="true" /></span>
-        <p className="font-display text-[24px] font-bold leading-tight text-cream">You’re on the list, {name.trim().split(' ')[0]}.</p>
+        <p className="display text-[30px] text-cream">You’re on the list, {name.trim().split(' ')[0]}.</p>
         <p className="text-[15px] leading-relaxed text-mist">We’ll message you on WhatsApp at {tenDigits(phone)} when your place opens. One message, no spam.</p>
       </div>
     )
   }
 
-  const field = 'h-13 w-full rounded-xl border bg-ink px-4 text-[17px] text-cream placeholder:text-[#77776f]'
+  const label = 'mb-2 text-[14px] font-medium text-mist'
+  const error = 'mt-1.5 text-[14px] text-destructive'
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-4">
       <div>
-        <label htmlFor="join-name" className="mb-1.5 block text-[14px] text-mist">Your name</label>
-        <input id="join-name" type="text" autoComplete="name" value={name} maxLength={80}
+        <Label htmlFor="join-name" className={label}>Your name</Label>
+        <Input id="join-name" type="text" autoComplete="name" value={name} maxLength={80}
           onChange={e => { setName(e.target.value); if (errors.name) setErrors({ ...errors, name: undefined }) }}
-          aria-invalid={!!errors.name} aria-describedby={errors.name ? 'join-name-error' : undefined}
-          className={`${field} ${errors.name ? 'border-[#ff8a7a]' : 'border-line'}`} />
-        {errors.name && <p id="join-name-error" className="mt-1.5 text-[14px] text-[#ff8a7a]">{errors.name}</p>}
+          aria-invalid={!!errors.name} aria-describedby={errors.name ? 'join-name-error' : undefined} />
+        {errors.name && <p id="join-name-error" className={error}>{errors.name}</p>}
       </div>
       <div>
-        <label htmlFor="join-phone" className="mb-1.5 block text-[14px] text-mist">WhatsApp number</label>
-        <div className={`flex h-13 items-center rounded-xl border bg-ink ${errors.phone ? 'border-[#ff8a7a]' : 'border-line'}`}>
-          <span className="pl-4 pr-2 text-[17px] text-mist" aria-hidden="true">+91</span>
-          <input id="join-phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={phone} maxLength={14}
+        <Label htmlFor="join-phone" className={label}>WhatsApp number</Label>
+        <div className="relative">
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[17px] text-mist" aria-hidden="true">+91</span>
+          <Input id="join-phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={phone} maxLength={14}
             onChange={e => { setPhone(e.target.value); if (errors.phone) setErrors({ ...errors, phone: undefined }) }}
             aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'join-phone-error' : undefined}
-            placeholder="98xxx xxxxx"
-            className="h-full w-full rounded-r-xl bg-transparent pr-4 text-[17px] text-cream placeholder:text-[#77776f]" />
+            placeholder="98xxx xxxxx" className="pl-14" />
         </div>
-        {errors.phone && <p id="join-phone-error" className="mt-1.5 text-[14px] text-[#ff8a7a]">{errors.phone}</p>}
+        {errors.phone && <p id="join-phone-error" className={error}>{errors.phone}</p>}
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label htmlFor="join-type" className="mb-1.5 block text-[14px] text-mist">Type of business</label>
-          <select id="join-type" value={type} onChange={e => setType(e.target.value)} className={`${field} border-line appearance-none`}>
-            <option value="">Choose one</option>
-            {BUSINESS_TYPES.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
+          <Label htmlFor="join-type" className={label}>Type of business</Label>
+          <NativeSelect id="join-type" value={type} onChange={e => setType(e.target.value)}>
+            <NativeSelectOption value="">Choose one</NativeSelectOption>
+            {BUSINESS_TYPES.map(t => <NativeSelectOption key={t} value={t}>{t}</NativeSelectOption>)}
+          </NativeSelect>
         </div>
         <div>
-          <label htmlFor="join-plan" className="mb-1.5 block text-[14px] text-mist">I’m interested in</label>
-          <select id="join-plan" value={plan} onChange={e => setPlan(e.target.value as PlanKey)} className={`${field} border-line appearance-none`}>
-            {PLANS.map(p => <option key={p.key} value={p.key}>{p.label}</option>)}
-          </select>
+          <Label htmlFor="join-plan" className={label}>I’m interested in</Label>
+          <NativeSelect id="join-plan" value={plan} onChange={e => setPlan(e.target.value as PlanKey)}>
+            {PLANS.map(p => <NativeSelectOption key={p.key} value={p.key}>{p.label}</NativeSelectOption>)}
+          </NativeSelect>
         </div>
       </div>
       {errors.form && <p className="rounded-xl bg-[#3a1512] px-4 py-3 text-[14px] text-[#ffb4a8]" role="alert">{errors.form}</p>}
-      <button type="submit" disabled={busy} className="mt-1 inline-flex h-14 items-center justify-center gap-2 rounded-full bg-saffron px-8 text-[17px] font-bold text-ink transition-opacity hover:opacity-90 disabled:opacity-60">
-        {busy && <Loader2 className="h-5 w-5 animate-spin" aria-hidden="true" />}
+      <Button type="submit" size="xl" disabled={busy} className="mt-1 w-full">
+        {busy && <Loader2 className="animate-spin" aria-hidden="true" />}
         {busy ? 'Saving' : 'Join the waitlist'}
-      </button>
+      </Button>
       <p className="text-[13px] text-mist">No payment now. We’ll message you once on WhatsApp when your place opens.</p>
     </form>
   )

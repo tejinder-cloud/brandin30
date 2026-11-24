@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import '@fontsource-variable/dm-sans'
+import '@fontsource-variable/bricolage-grotesque/wdth.css'
 import '@fontsource-variable/syne'
 import '@fontsource-variable/playfair-display'
 import '@fontsource-variable/fredoka'

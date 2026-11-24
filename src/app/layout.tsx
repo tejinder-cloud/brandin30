@@ -7,7 +7,6 @@ import '@fontsource-variable/fredoka'
 import '@fontsource/archivo-black'
 import './globals.css'
 import { SITE_URL } from '@/lib/site'
-import { Analytics } from '@/components/analytics'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -29,7 +28,7 @@ export const viewport: Viewport = { themeColor: '#fbf6f1', width: 'device-width'
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en-IN" className="h-full antialiased">
-      <body className="min-h-full" suppressHydrationWarning>{children}<Analytics /></body>
+      <body className="min-h-full" suppressHydrationWarning>{children}</body>
     </html>
   )
 }

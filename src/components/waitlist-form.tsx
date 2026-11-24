@@ -11,8 +11,8 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { db } from '@/lib/supabase'
+import { track } from '@/lib/track'
 import { BUSINESS_TYPES } from '@/lib/site'
-import { track } from '@/components/analytics'
 
 const tenDigits = (raw: string) => {
   let d = raw.replace(/\D/g, '')
@@ -58,7 +58,7 @@ export function WaitlistForm() {
       else setErrors({ form: 'That didn’t save. Check your connection and try again.' })
       return
     }
-    track('waitlist_join', { business_type: type || 'not given' })
+    track('generate_lead', { business_type: type || 'not chosen' })
     setDone(true)
   }
 
@@ -66,8 +66,8 @@ export function WaitlistForm() {
     return (
       <div className="flex flex-col items-start gap-3 rounded-xl bg-field p-6" role="status">
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-saffron text-ink"><Check className="h-5 w-5" aria-hidden="true" /></span>
-        <p className="display text-[30px] text-foreground">You’re on the list, {name.trim().split(' ')[0]}.</p>
-        <p className="text-[15px] leading-relaxed text-muted-foreground">We’ll message you on WhatsApp at {tenDigits(phone)} when ordering opens. One message, no spam.</p>
+        <p className="display text-[30px] text-foreground" data-clarity-mask="true">You’re on the list, {name.trim().split(' ')[0]}.</p>
+        <p className="text-[15px] leading-relaxed text-muted-foreground" data-clarity-mask="true">We’ll message you on WhatsApp at {tenDigits(phone)} when ordering opens. One message, no spam.</p>
       </div>
     )
   }

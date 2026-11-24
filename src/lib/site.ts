@@ -22,3 +22,8 @@ export const BUSINESS_TYPES = ['Coaching or tuition', 'Clinic or healthcare', 'B
 //     images: [{ src: '/samples/coaching-logo.png', alt: 'Logo', label: 'Logo' }] }
 export type SampleKit = { business: string; type: string; style: string; images: { src: string; alt: string; label: string }[] }
 export const SAMPLE_KITS: SampleKit[] = []
+
+// Measurement IDs. These are public identifiers (they appear in the page source), not keys.
+// Set either variable to an empty string in Vercel to switch that tool off.
+export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? 'G-JW6VJX78QC'
+export const CLARITY_ID = process.env.NEXT_PUBLIC_CLARITY_ID ?? 'zile34zogi'

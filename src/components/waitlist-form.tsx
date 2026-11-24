@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { db } from '@/lib/supabase'
 import { BUSINESS_TYPES } from '@/lib/site'
+import { track } from '@/components/analytics'
 
 const tenDigits = (raw: string) => {
   let d = raw.replace(/\D/g, '')
@@ -57,6 +58,7 @@ export function WaitlistForm() {
       else setErrors({ form: 'That didn’t save. Check your connection and try again.' })
       return
     }
+    track('waitlist_join', { business_type: type || 'not given' })
     setDone(true)
   }
 

@@ -40,7 +40,6 @@ const TASK_TONE: Record<Task['status'], string> = { todo: 'bg-slate-100 text-sla
 const TASK_LABEL: Record<Task['status'], string> = { todo: 'To do', doing: 'In progress', done: 'Done', blocked: 'Blocked' }
 const AGENT_TONE: Record<Agent['status'], string> = { planned: 'bg-slate-100 text-slate-700', building: 'bg-blue-50 text-blue-800', testing: 'bg-amber-50 text-amber-900', live: 'bg-emerald-50 text-emerald-800', paused: 'bg-red-50 text-red-700' }
 const IMPACT_TONE: Record<Risk['impact'], string> = { High: 'bg-red-50 text-red-700', Medium: 'bg-amber-50 text-amber-900', Low: 'bg-slate-100 text-slate-700' }
-const PLAN_LABEL: Record<string, string> = { starter: 'Starter', complete: 'Complete Kit', website: 'Kit + Website' }
 
 export default function OpsPage() {
   const router = useRouter()
@@ -331,22 +330,22 @@ const Stat = ({ label, value, note, bar, warn }: { label: string; value: string;
   </div>
 )
 
-// Everyone who joined the waitlist on the selling page, newest first. The demand gate is 10 paid pre-orders.
+// Everyone who joined the waitlist on the home page, newest first. There is one package, so no plan split.
 function WaitlistCard({ w }: { w: Waitlist }) {
   const when = (iso: string) => new Date(iso).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', timeZone: 'Asia/Kolkata' })
   return (
     <section className={card + ' p-5'}>
       <SectionTitle title="Waitlist" note={`${w.total} sign-ups · ${w.last7} in the last 7 days`} />
-      <div className="grid grid-cols-3 gap-3 mb-4">
-        {([['Complete Kit', w.complete], ['Starter', w.starter], ['Kit + Website', w.website]] as [string, number][]).map(([l, n]) => (
+      <div className="grid grid-cols-2 gap-3 mb-4">
+        {([['Total sign-ups', w.total], ['Last 7 days', w.last7]] as [string, number][]).map(([l, n]) => (
           <div key={l} className="rounded-xl bg-slate-50 px-3 py-2.5"><div className="text-[11px] font-semibold tracking-[0.06em] uppercase text-slate-500">{l}</div><div className="text-[20px] font-semibold tabular-nums">{n}</div></div>
         ))}
       </div>
       {!w.rows.length ? <p className="text-sm text-slate-600">No sign-ups yet. They appear here the moment someone fills in the form on the selling page.</p> : (
         <div className="overflow-x-auto max-h-[360px] overflow-y-auto">
-          <table className="w-full text-[13px] min-w-[640px]">
+          <table className="w-full text-[13px] min-w-[560px]">
             <thead className="sticky top-0 bg-white"><tr className="text-left text-[11px] uppercase tracking-[0.06em] text-slate-500">
-              <th className="py-2 pr-3 font-semibold">Name</th><th className="py-2 pr-3 font-semibold">WhatsApp</th><th className="py-2 pr-3 font-semibold">Business</th><th className="py-2 pr-3 font-semibold">Interested in</th><th className="py-2 pr-3 font-semibold">Came from</th><th className="py-2 font-semibold">When</th>
+              <th className="py-2 pr-3 font-semibold">Name</th><th className="py-2 pr-3 font-semibold">WhatsApp</th><th className="py-2 pr-3 font-semibold">Business</th><th className="py-2 pr-3 font-semibold">Came from</th><th className="py-2 font-semibold">When</th>
             </tr></thead>
             <tbody className="divide-y divide-slate-100">
               {w.rows.map(r => (
@@ -354,7 +353,6 @@ function WaitlistCard({ w }: { w: Waitlist }) {
                   <td className="py-2 pr-3 font-medium">{r.name}</td>
                   <td className="py-2 pr-3 tabular-nums whitespace-nowrap"><a href={`https://wa.me/91${r.phone}`} target="_blank" rel="noreferrer" className="text-emerald-800 underline">{r.phone}</a></td>
                   <td className="py-2 pr-3">{r.business_type || <span className="text-slate-400">—</span>}</td>
-                  <td className="py-2 pr-3">{r.plan ? PLAN_LABEL[r.plan] || r.plan : <span className="text-slate-400">—</span>}</td>
                   <td className="py-2 pr-3 text-slate-600 max-w-[180px] truncate">{r.source || 'Direct'}</td>
                   <td className="py-2 whitespace-nowrap text-slate-600">{when(r.created_at)}</td>
                 </tr>

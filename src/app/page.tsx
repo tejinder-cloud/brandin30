@@ -1,6 +1,7 @@
 import { ArrowRight, Check, MessageCircle } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
+import { Analytics } from '@/components/analytics'
 import { NamePreview } from '@/components/name-preview'
 import { SampleKits } from '@/components/sample-kits'
 import { WaitlistForm } from '@/components/waitlist-form'
@@ -58,6 +59,7 @@ function Sticker({ children, className = '' }: { children: React.ReactNode; clas
 export default function Home() {
   return (
     <div className="site min-h-screen bg-background text-foreground">
+      <Analytics />
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-ink focus:px-4 focus:py-2 focus:text-cream">Skip to content</a>
 
       <header className="sticky top-0 z-40 border-b border-border bg-blush">

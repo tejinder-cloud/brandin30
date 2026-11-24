@@ -4,9 +4,10 @@
 // a WhatsApp profile, an Instagram post and a business card.
 // It is a taste of the product, not the product, and it is labelled that way.
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { track } from '@/lib/track'
 
 const VIBES = [
   { key: 'modern', label: 'Modern', font: "'Syne Variable', sans-serif", weight: 700, bg: '#101418', ink: '#EAF2F8', accent: '#7CE0C3', onAccent: '#0B1512', radius: 14, track: '-0.02em' },
@@ -21,6 +22,12 @@ const QR = '1110111101010111011100010101110101111'
 export function NamePreview() {
   const [name, setName] = useState('')
   const [vibe, setVibe] = useState<(typeof VIBES)[number]['key']>('modern')
+  const used = useRef(false)
+  const markUsed = () => {
+    if (used.current) return
+    used.current = true
+    track('name_preview_used')
+  }
   const v = VIBES.find(x => x.key === vibe)!
   const shown = name.trim() || 'Your Business'
   const initial = shown.charAt(0).toUpperCase()
@@ -46,7 +53,7 @@ export function NamePreview() {
         type="text"
         value={name}
         maxLength={40}
-        onChange={e => setName(e.target.value)}
+        onChange={e => { setName(e.target.value); markUsed() }}
         placeholder="e.g. Gyan Path Classes"
         autoComplete="off"
         enterKeyHint="done"
@@ -58,7 +65,7 @@ export function NamePreview() {
             key={x.key}
             type="button"
             aria-pressed={vibe === x.key}
-            onClick={() => setVibe(x.key)}
+            onClick={() => { setVibe(x.key); markUsed() }}
             className={`h-11 cursor-pointer rounded-full border text-[14px] font-medium transition-colors ${vibe === x.key ? 'border-saffron bg-saffron text-ink' : 'border-input text-foreground hover:border-foreground'}`}
           >
             {x.label}

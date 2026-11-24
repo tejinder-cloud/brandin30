@@ -1,0 +1,51 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Syne Variable', 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --color-ink: #0c0c0c;
+  --color-coal: #151515;
+  --color-line: #2a2a2a;
+  --color-cream: #f5f0e8;
+  --color-mist: #a8a8a0;
+  --color-saffron: #ff7a00;
+  --color-saffron-soft: #ffb870;
+  --color-ember: #2a1a08;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Landing page only: one clear focus ring on the dark background. */
+.site :focus-visible {
+  outline: 2px solid #ffb870;
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.site details > summary {
+  list-style: none;
+  cursor: pointer;
+}
+.site details > summary::-webkit-details-marker {
+  display: none;
+}
+.site details[open] .faq-plus {
+  transform: rotate(45deg);
+}

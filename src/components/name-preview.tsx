@@ -2,7 +2,7 @@
 
 // The hook on the landing page: type a business name and watch it land on a logo,
 // a WhatsApp profile, an Instagram post and a business card.
-// It is a taste of the product, not the product; the real kit has three logo options.
+// It is a taste of the product, not the product, and it is labelled that way.
 
 import { useState } from 'react'
 import { Input } from '@/components/ui/input'
@@ -26,7 +26,7 @@ export function NamePreview() {
   const initial = shown.charAt(0).toUpperCase()
   const type = { fontFamily: v.font, fontWeight: v.weight, letterSpacing: v.track }
   const tile = 'overflow-hidden rounded-xl transition-colors duration-300'
-  const caption = 'mt-1.5 text-[12.5px] text-mist'
+  const caption = 'mt-1.5 text-[12.5px] text-muted-foreground'
 
   const mark = (size: number) => (
     <span
@@ -39,7 +39,7 @@ export function NamePreview() {
   )
 
   return (
-    <div className="on-ink rounded-2xl bg-ink p-4 text-cream sm:p-5">
+    <div className="panel-dark rounded-2xl p-4 sm:p-5 lg:rotate-[1.5deg]">
       <Label htmlFor="preview-name" className="mb-2 text-[15px] font-medium">Try it: type your business name</Label>
       <Input
         id="preview-name"
@@ -50,7 +50,6 @@ export function NamePreview() {
         placeholder="e.g. Gyan Path Classes"
         autoComplete="off"
         enterKeyHint="done"
-        className="bg-coal"
       />
 
       <div className="mt-3 grid grid-cols-4 gap-1.5" role="group" aria-label="Pick a look">
@@ -60,7 +59,7 @@ export function NamePreview() {
             type="button"
             aria-pressed={vibe === x.key}
             onClick={() => setVibe(x.key)}
-            className={`h-11 cursor-pointer rounded-full border text-[14px] font-medium transition-colors ${vibe === x.key ? 'border-saffron bg-saffron text-ink' : 'border-input text-cream hover:border-cream'}`}
+            className={`h-11 cursor-pointer rounded-full border text-[14px] font-medium transition-colors ${vibe === x.key ? 'border-saffron bg-saffron text-ink' : 'border-input text-foreground hover:border-foreground'}`}
           >
             {x.label}
           </button>
@@ -110,7 +109,7 @@ export function NamePreview() {
         </figure>
       </div>
 
-      <p className="mt-3 text-[13px] leading-relaxed text-mist">A quick preview, not your final kit. Your kit comes with three full logo options, colours and matching fonts.</p>
+      <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">A quick preview to play with, not your final kit.</p>
     </div>
   )
 }

@@ -1,22 +1,17 @@
 'use client'
 
-// Waitlist form. Saves through one database function that validates the name and number
+// Waitlist form. There is one package, so every sign-up is recorded against the same plan value.
+// Saves through one database function that validates the name and number
 // again on the server, so nothing here needs to be trusted.
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Check, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { NativeSelect, NativeSelectOption } from '@/components/ui/native-select'
 import { db } from '@/lib/supabase'
-import { BUSINESS_TYPES, PRICES, rupee, type PlanKey } from '@/lib/site'
-
-const PLANS: { key: PlanKey; label: string }[] = [
-  { key: 'complete', label: `Complete Kit, ${rupee(PRICES.founding)}` },
-  { key: 'starter', label: `Starter, ${rupee(PRICES.starter)}` },
-  { key: 'website', label: `Kit + Website, ${rupee(PRICES.website)}/month` },
-]
+import { BUSINESS_TYPES } from '@/lib/site'
 
 const tenDigits = (raw: string) => {
   let d = raw.replace(/\D/g, '')
@@ -29,19 +24,9 @@ export function WaitlistForm() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [type, setType] = useState('')
-  const [plan, setPlan] = useState<PlanKey>('complete')
   const [errors, setErrors] = useState<{ name?: string; phone?: string; form?: string }>({})
   const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
-
-  useEffect(() => {
-    const onPlan = (e: Event) => {
-      const p = (e as CustomEvent).detail
-      if (p === 'starter' || p === 'complete' || p === 'website') setPlan(p)
-    }
-    window.addEventListener('bi30-plan', onPlan)
-    return () => window.removeEventListener('bi30-plan', onPlan)
-  }, [])
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -58,7 +43,7 @@ export function WaitlistForm() {
     let failed = false
     try {
       const { data, error } = await db().rpc('brandin30_join_waitlist', {
-        p_name: name.trim(), p_phone: tenDigits(phone), p_business_type: type || null, p_plan: plan, p_source: source || null,
+        p_name: name.trim(), p_phone: tenDigits(phone), p_business_type: type || null, p_plan: 'complete', p_source: source || null,
       })
       reply = data as { ok?: boolean; error?: string } | null
       failed = !!error
@@ -77,15 +62,15 @@ export function WaitlistForm() {
 
   if (done) {
     return (
-      <div className="flex flex-col items-start gap-3 rounded-xl bg-ember p-6" role="status">
+      <div className="flex flex-col items-start gap-3 rounded-xl bg-field p-6" role="status">
         <span className="flex h-11 w-11 items-center justify-center rounded-full bg-saffron text-ink"><Check className="h-5 w-5" aria-hidden="true" /></span>
-        <p className="display text-[30px] text-cream">You’re on the list, {name.trim().split(' ')[0]}.</p>
-        <p className="text-[15px] leading-relaxed text-mist">We’ll message you on WhatsApp at {tenDigits(phone)} when your place opens. One message, no spam.</p>
+        <p className="display text-[30px] text-foreground">You’re on the list, {name.trim().split(' ')[0]}.</p>
+        <p className="text-[15px] leading-relaxed text-muted-foreground">We’ll message you on WhatsApp at {tenDigits(phone)} when ordering opens. One message, no spam.</p>
       </div>
     )
   }
 
-  const label = 'mb-2 text-[14px] font-medium text-mist'
+  const label = 'mb-2 text-[14px] font-medium text-muted-foreground'
   const error = 'mt-1.5 text-[14px] text-destructive'
   return (
     <form onSubmit={submit} noValidate className="flex flex-col gap-4">
@@ -99,7 +84,7 @@ export function WaitlistForm() {
       <div>
         <Label htmlFor="join-phone" className={label}>WhatsApp number</Label>
         <div className="relative">
-          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[17px] text-mist" aria-hidden="true">+91</span>
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[17px] text-muted-foreground" aria-hidden="true">+91</span>
           <Input id="join-phone" type="tel" inputMode="numeric" autoComplete="tel-national" value={phone} maxLength={14}
             onChange={e => { setPhone(e.target.value); if (errors.phone) setErrors({ ...errors, phone: undefined }) }}
             aria-invalid={!!errors.phone} aria-describedby={errors.phone ? 'join-phone-error' : undefined}
@@ -107,27 +92,19 @@ export function WaitlistForm() {
         </div>
         {errors.phone && <p id="join-phone-error" className={error}>{errors.phone}</p>}
       </div>
-      <div className="grid gap-4 sm:grid-cols-2">
-        <div>
-          <Label htmlFor="join-type" className={label}>Type of business</Label>
-          <NativeSelect id="join-type" value={type} onChange={e => setType(e.target.value)}>
-            <NativeSelectOption value="">Choose one</NativeSelectOption>
-            {BUSINESS_TYPES.map(t => <NativeSelectOption key={t} value={t}>{t}</NativeSelectOption>)}
-          </NativeSelect>
-        </div>
-        <div>
-          <Label htmlFor="join-plan" className={label}>I’m interested in</Label>
-          <NativeSelect id="join-plan" value={plan} onChange={e => setPlan(e.target.value as PlanKey)}>
-            {PLANS.map(p => <NativeSelectOption key={p.key} value={p.key}>{p.label}</NativeSelectOption>)}
-          </NativeSelect>
-        </div>
+      <div>
+        <Label htmlFor="join-type" className={label}>Type of business</Label>
+        <NativeSelect id="join-type" value={type} onChange={e => setType(e.target.value)}>
+          <NativeSelectOption value="">Choose one</NativeSelectOption>
+          {BUSINESS_TYPES.map(t => <NativeSelectOption key={t} value={t}>{t}</NativeSelectOption>)}
+        </NativeSelect>
       </div>
       {errors.form && <p className="rounded-xl bg-[#3a1512] px-4 py-3 text-[14px] text-[#ffb4a8]" role="alert">{errors.form}</p>}
       <Button type="submit" size="xl" disabled={busy} className="mt-1 w-full">
         {busy && <Loader2 className="animate-spin" aria-hidden="true" />}
         {busy ? 'Saving' : 'Join the waitlist'}
       </Button>
-      <p className="text-[13px] text-mist">No payment now. We’ll message you once on WhatsApp when your place opens.</p>
+      <p className="text-[13px] text-muted-foreground">No payment now. We’ll message you once on WhatsApp when ordering opens.</p>
     </form>
   )
 }

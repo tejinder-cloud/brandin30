@@ -1,18 +1,44 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-/* Brand colours. Saffron and ink are the two canvases; everything else supports them. */
+/* Fixed brand colours. */
 :root {
   --ink: #0c0c0c;
-  --coal: #151515;
-  --line: #2a2a2a;
   --cream: #f5f0e8;
-  --mist: #a8a8a0;
+  --paper: #fbf6f1;
+  --blush: #fbe6d8;
   --saffron: #ff7a00;
   --saffron-soft: #ffb870;
-  --ember: #2a1a08;
-  /* Text that sits on saffron: a dark shade of the same hue, never grey. */
+  /* Saffron dark enough to read as large heading text on the light background. */
+  --saffron-deep: #e65c00;
+  /* Small text on saffron: a dark shade of the same hue, never grey. */
   --rust: #3d1d00;
+}
+
+/* The landing page is light. These are the roles shadcn/ui components read. */
+.site {
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --muted-foreground: #5c534b;
+  --border: #e3d5c8;
+  --input: #8f847a;
+  --field: #ffffff;
+  --ring: var(--ink);
+  --btn-shadow: var(--ink);
+}
+
+/* Dark panels (the name preview, the price card, the form) flip the same roles. */
+.site .panel-dark {
+  --background: var(--ink);
+  --foreground: var(--cream);
+  --muted-foreground: #a8a8a0;
+  --border: #2a2a2a;
+  --input: #6a6a63;
+  --field: #171717;
+  --ring: var(--saffron-soft);
+  --btn-shadow: transparent;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 @theme inline {
@@ -20,32 +46,28 @@
   --font-display: 'Bricolage Grotesque Variable', 'DM Sans Variable', ui-sans-serif, system-ui, sans-serif;
 
   --color-ink: var(--ink);
-  --color-coal: var(--coal);
-  --color-line: var(--line);
   --color-cream: var(--cream);
-  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+  --color-blush: var(--blush);
   --color-saffron: var(--saffron);
   --color-saffron-soft: var(--saffron-soft);
-  --color-ember: var(--ember);
+  --color-saffron-deep: var(--saffron-deep);
   --color-rust: var(--rust);
 
-  /* The names shadcn/ui components expect, pointed at the brand colours. */
-  --color-background: var(--ink);
-  --color-foreground: var(--cream);
-  --color-card: var(--coal);
-  --color-card-foreground: var(--cream);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-field: var(--field);
+  --color-ring: var(--ring);
   --color-primary: var(--saffron);
   --color-primary-foreground: var(--ink);
-  --color-secondary: #1f1f1f;
-  --color-secondary-foreground: var(--cream);
-  --color-muted: #1f1f1f;
-  --color-muted-foreground: var(--mist);
-  --color-accent: var(--ember);
-  --color-accent-foreground: var(--saffron-soft);
-  --color-destructive: #ff8a7a;
-  --color-border: var(--line);
-  --color-input: #5c5c56;
-  --color-ring: var(--saffron-soft);
+  --color-secondary: var(--field);
+  --color-secondary-foreground: var(--foreground);
+  --color-destructive: #c62f1c;
+
+  --animate-marquee: marquee 28s linear infinite;
 }
 
 html {
@@ -57,26 +79,30 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Poster headings: the condensed cut of Bricolage, so big type fits a phone column. */
+/* Poster headings: the condensed cut of Bricolage in capitals, so big type fits a phone column. */
 @utility display {
   font-family: var(--font-display);
   font-stretch: 75%;
   font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 0.95;
+  letter-spacing: -0.01em;
+  line-height: 0.92;
+  text-transform: uppercase;
   text-wrap: balance;
 }
 
-/* Landing page only: one clear focus ring. Cream-orange on ink, ink on saffron. */
 .site :focus-visible {
-  outline: 2px solid var(--saffron-soft);
+  outline: 2px solid var(--ring);
   outline-offset: 3px;
 }
-.site .on-saffron :focus-visible {
-  outline-color: var(--ink);
+.site .panel-dark [aria-invalid='true'] {
+  border-color: #ff8a7a;
 }
-.site .on-saffron .on-ink :focus-visible {
-  outline-color: var(--saffron-soft);
+
+/* The scrolling strip under the hero. */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* The hero settles into place once on load. Content is visible without it. */
@@ -91,6 +117,21 @@ body {
   animation-delay: calc(var(--i, 0) * 70ms);
 }
 
+/* The statement fills in word by word as it scrolls into view, where the browser supports it.
+   Without support the words are simply dark from the start. */
+@keyframes fill-word {
+  from {
+    color: color-mix(in srgb, var(--saffron) 38%, transparent);
+  }
+}
+@supports (animation-timeline: view()) {
+  .site .fill > span {
+    animation: fill-word linear both;
+    animation-timeline: view();
+    animation-range: cover calc(10% + var(--w) * 0.9%) cover calc(22% + var(--w) * 0.9%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -98,6 +139,13 @@ body {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .site .marquee-track {
+    animation: none;
+  }
+  .site .fill > span {
+    animation: none;
   }
 }

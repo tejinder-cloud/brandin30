@@ -10,11 +10,11 @@ import { SITE_URL } from '@/lib/site'
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: { default: 'BrandIn30: your logo and full brand kit from 5 questions', template: '%s · BrandIn30' },
-  description: 'Logo, colours, fonts, Instagram posts, WhatsApp kit and business card for your business. One-time price from ₹999. Made for small businesses in India.',
+  title: { default: 'BrandIn30: your logo, brand kit and one-page website', template: '%s · BrandIn30' },
+  description: 'Logo, colours, fonts, Instagram posts, WhatsApp kit, business card and a one-page website for your business. ₹2,499, one time. Made for small businesses in India.',
   openGraph: {
     title: 'BrandIn30: fire your branding agency',
-    description: 'Answer 5 questions. Get your logo, colours, fonts, Instagram posts, WhatsApp kit and business card. From ₹999, one time.',
+    description: 'Pick a style, answer a few questions. Get your logo, colours, fonts, Instagram posts, WhatsApp kit, business card and a one-page website. ₹2,499, one time.',
     url: SITE_URL,
     siteName: 'BrandIn30',
     locale: 'en_IN',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   icons: { icon: [{ url: '/icon.svg', type: 'image/svg+xml' }] },
 }
 
-export const viewport: Viewport = { themeColor: '#0c0c0c', width: 'device-width', initialScale: 1 }
+export const viewport: Viewport = { themeColor: '#fbf6f1', width: 'device-width', initialScale: 1 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

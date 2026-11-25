@@ -7,7 +7,8 @@ import { SampleKits } from '@/components/sample-kits'
 import { WaitlistForm } from '@/components/waitlist-form'
 import { DELIVERY_HOURS, PACKAGE_NAME, PRICES, STYLE_COUNT, WEBSITE_LIVE_DAYS, WHATSAPP_NUMBER, rupee } from '@/lib/site'
 
-const KEEP_LIVE = `After ${WEBSITE_LIVE_DAYS} days the link ends unless you keep it live for ${rupee(PRICES.keepLive)} a month.`
+const KEEP_LIVE_PRICE = `${rupee(PRICES.keepLive)} a month or ${rupee(PRICES.keepLiveYear)} a year`
+const KEEP_LIVE = `After ${WEBSITE_LIVE_DAYS} days the link ends unless you keep it live for ${KEEP_LIVE_PRICE}.`
 
 // Each card gets a colour and a slight tilt, so the list reads as a spread of things on a table.
 const KIT = [
@@ -35,9 +36,10 @@ const COMPARE = [
 
 const FAQ = [
   { q: 'Can I order today?', a: 'Not yet. Ordering opens when the style catalogue is live. Join the waitlist and you get first access. No payment is taken now.' },
-  { q: 'Is it really a one-time payment?', a: `Yes. ${rupee(PRICES.kit)} is paid once and the files are yours. The only monthly cost is optional: ${rupee(PRICES.keepLive)} a month if you want your website to stay live on a BrandIn30 link after the first ${WEBSITE_LIVE_DAYS} days.` },
+  { q: 'Is it really a one-time payment?', a: `Yes. ${rupee(PRICES.kit)} is paid once and the files are yours. The only ongoing cost is optional: ${KEEP_LIVE_PRICE} if you want your website to stay live on a BrandIn30 link after the first ${WEBSITE_LIVE_DAYS} days.` },
   { q: `What happens to my website after ${WEBSITE_LIVE_DAYS} days?`, a: `${KEEP_LIVE} Either way you keep the ready-to-upload file and the PNG.` },
   { q: 'Which files do I get?', a: 'Your logo as PNG, SVG and PDF plus a favicon, your colour palette and font pairing, your WhatsApp Business kit, your digital business card, and your website as a ready-to-upload file plus a PNG.' },
+  { q: 'Are Instagram templates included?', a: 'No, they are not part of this package. They will be available later as an add-on.' },
   { q: 'Do I own my logo?', a: 'Yes. Once you pay, the logo and files are yours to use for your business. The fonts are free for commercial use. Trademark registration is not included.' },
   { q: 'Is Hindi supported?', a: 'You can answer the questions in Hindi or Hinglish. The kit itself is in English for now; Hindi and Punjabi are planned.' },
 ]

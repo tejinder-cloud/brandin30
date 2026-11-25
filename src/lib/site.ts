@@ -5,8 +5,9 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://brandin30.i
 // Ten digits, no country code. The floating WhatsApp button only shows when this is set.
 export const WHATSAPP_NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '').replace(/\D/g, '').slice(-10)
 
-// One package, paid once. keepLive is the optional monthly fee to keep the website link running.
-export const PRICES = { kit: 2499, keepLive: 499 }
+// One package, paid once. keepLive and keepLiveYear are the optional fees (monthly or yearly)
+// to keep the website link running after the first WEBSITE_LIVE_DAYS days.
+export const PRICES = { kit: 2499, keepLive: 499, keepLiveYear: 1999 }
 export const PACKAGE_NAME = 'BrandIn30 Brand Kit + Website'
 export const WEBSITE_LIVE_DAYS = 60
 export const STYLE_COUNT = 20

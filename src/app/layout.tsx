@@ -11,10 +11,10 @@ import { SITE_URL } from '@/lib/site'
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: 'BrandIn30: your logo, brand kit and one-page website', template: '%s · BrandIn30' },
-  description: 'Logo, colours, fonts, Instagram posts, WhatsApp kit, business card and a one-page website for your business. ₹2,499, one time. Made for small businesses in India.',
+  description: 'Logo, colours, fonts, WhatsApp kit, business card and a one-page website for your business. ₹2,499, one time. Made for small businesses in India.',
   openGraph: {
     title: 'BrandIn30: fire your branding agency',
-    description: 'Pick a style, answer a few questions. Get your logo, colours, fonts, Instagram posts, WhatsApp kit, business card and a one-page website. ₹2,499, one time.',
+    description: 'Pick a style, answer a few questions. Get your logo, colours, fonts, WhatsApp kit, business card and a one-page website. ₹2,499, one time.',
     url: SITE_URL,
     siteName: 'BrandIn30',
     locale: 'en_IN',

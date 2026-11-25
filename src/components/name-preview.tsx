@@ -1,7 +1,7 @@
 'use client'
 
 // The hook on the landing page: type a business name and watch it land on a logo,
-// a WhatsApp profile, an Instagram post and a business card.
+// a WhatsApp profile, a one-page website and a business card.
 // It is a taste of the product, not the product, and it is labelled that way.
 
 import { useRef, useState } from 'react'
@@ -92,11 +92,18 @@ export function NamePreview() {
         </figure>
 
         <figure>
-          <div className={`${tile} flex aspect-square flex-col justify-between p-3.5`} style={{ background: v.accent, color: v.onAccent }}>
-            <span className="text-[12px] font-semibold opacity-80">Your offer here</span>
-            <span className="line-clamp-3 break-words text-[clamp(19px,5.4vw,26px)] leading-[1.05]" style={type}>{shown}</span>
+          <div className={`${tile} flex aspect-square flex-col`} style={{ background: v.bg, color: v.ink }}>
+            <span className="flex gap-1 px-3 py-2" style={{ background: v.ink }} aria-hidden="true">
+              {[0, 1, 2].map(i => <span key={i} className="h-1.5 w-1.5 rounded-full" style={{ background: v.bg, opacity: 0.7 }} />)}
+            </span>
+            <span className="flex flex-1 flex-col justify-center gap-2 px-3.5">
+              <span className="line-clamp-2 break-words text-[clamp(17px,4.8vw,22px)] leading-[1.05]" style={type}>{shown}</span>
+              <span className="h-1.5 w-4/5 rounded-full opacity-25" style={{ background: v.ink }} aria-hidden="true" />
+              <span className="h-1.5 w-3/5 rounded-full opacity-25" style={{ background: v.ink }} aria-hidden="true" />
+              <span className="mt-1 h-6 w-20" style={{ background: v.accent, borderRadius: Math.min(v.radius, 12) }} aria-hidden="true" />
+            </span>
           </div>
-          <figcaption className={caption}>Instagram post</figcaption>
+          <figcaption className={caption}>One-page website</figcaption>
         </figure>
 
         <figure className="col-span-2">

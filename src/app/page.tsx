@@ -15,11 +15,8 @@ const KIT = [
   { name: 'Colour palette', detail: 'Five colours with HEX, RGB and CMYK codes for screen and print.', look: 'bg-saffron', tilt: 'rotate-1' },
   { name: 'Font pairing', detail: 'A heading font and a body font, both free for commercial use.', look: 'bg-background', tilt: '-rotate-[0.5deg]' },
   { name: 'WhatsApp Business kit', detail: 'Profile picture, catalogue cover and a ready-to-paste description.', look: 'bg-ink text-cream', tilt: 'rotate-[1.5deg]' },
-  { name: 'Instagram templates', detail: 'Five posts and three stories in your colours and fonts.', look: 'bg-field', tilt: 'rotate-[0.5deg]' },
-  { name: 'Digital business card', detail: 'A shareable card with a QR code that saves to phone contacts.', look: 'bg-background', tilt: '-rotate-[1.5deg]' },
-  { name: 'Brand voice guide', detail: 'How your business should sound, with words to use and avoid.', look: 'bg-saffron', tilt: 'rotate-1' },
-  { name: 'Brand guidelines PDF', detail: 'Logo rules, colour codes and fonts in one file for printers and designers.', look: 'bg-field', tilt: '-rotate-1' },
-  { name: 'One-page website', detail: `A ready-to-upload file plus a PNG, and live on a BrandIn30 link for ${WEBSITE_LIVE_DAYS} days. ${KEEP_LIVE}`, look: 'bg-ink text-cream', tilt: 'rotate-[0.5deg]' },
+  { name: 'Digital business card', detail: 'A shareable card with a QR code that saves to phone contacts.', look: 'bg-field', tilt: '-rotate-[1.5deg]' },
+  { name: 'One-page website', detail: `A ready-to-upload file plus a PNG, and live on a BrandIn30 link for ${WEBSITE_LIVE_DAYS} days. ${KEEP_LIVE}`, look: 'bg-saffron', tilt: 'rotate-[0.5deg]' },
 ]
 
 const STEPS = [
@@ -30,8 +27,8 @@ const STEPS = [
 ]
 
 const COMPARE = [
-  { who: 'BrandIn30', cost: `${rupee(PRICES.kit)}, one time`, time: `Within ${DELIVERY_HOURS} hours of ordering`, get: 'Full kit plus a one-page website', us: true },
-  { who: 'Branding agency', cost: '₹30,000 and up', time: '2 to 4 weeks', get: 'Full kit', us: false },
+  { who: 'BrandIn30', cost: `${rupee(PRICES.kit)}, one time`, time: `Within ${DELIVERY_HOURS} hours of ordering`, get: 'Six-piece kit with a one-page website', us: true },
+  { who: 'Branding agency', cost: '₹30,000 and up', time: '2 to 4 weeks', get: 'A full brand identity', us: false },
   { who: 'Freelance designer', cost: '₹5,000 to ₹15,000', time: '1 to 2 weeks', get: 'Usually the logo only', us: false },
   { who: 'Do it yourself', cost: 'Free, plus your hours', time: 'A weekend or more', get: 'Whatever you manage to design', us: false },
 ]
@@ -40,13 +37,13 @@ const FAQ = [
   { q: 'Can I order today?', a: 'Not yet. Ordering opens when the style catalogue is live. Join the waitlist and you get first access. No payment is taken now.' },
   { q: 'Is it really a one-time payment?', a: `Yes. ${rupee(PRICES.kit)} is paid once and the files are yours. The only monthly cost is optional: ${rupee(PRICES.keepLive)} a month if you want your website to stay live on a BrandIn30 link after the first ${WEBSITE_LIVE_DAYS} days.` },
   { q: `What happens to my website after ${WEBSITE_LIVE_DAYS} days?`, a: `${KEEP_LIVE} Either way you keep the ready-to-upload file and the PNG.` },
-  { q: 'Which files do I get?', a: 'Your logo as PNG, SVG and PDF plus a favicon, your templates as ready-to-post images, the brand guidelines PDF, and your website as a ready-to-upload file plus a PNG.' },
+  { q: 'Which files do I get?', a: 'Your logo as PNG, SVG and PDF plus a favicon, your colour palette and font pairing, your WhatsApp Business kit, your digital business card, and your website as a ready-to-upload file plus a PNG.' },
   { q: 'Do I own my logo?', a: 'Yes. Once you pay, the logo and files are yours to use for your business. The fonts are free for commercial use. Trademark registration is not included.' },
   { q: 'Is Hindi supported?', a: 'You can answer the questions in Hindi or Hinglish. The kit itself is in English for now; Hindi and Punjabi are planned.' },
 ]
 
-const STRIP = ['Logo', 'Colours', 'Fonts', 'WhatsApp kit', 'Instagram templates', 'Business card', 'Brand voice guide', 'Guidelines PDF', 'One-page website']
-const STATEMENT = 'A new business gets judged in seconds: on a signboard, a WhatsApp profile, an Instagram page. You should look the same, and look good, on every one of them.'.split(' ')
+const STRIP = ['Logo files', 'Colour palette', 'Font pairing', 'WhatsApp Business kit', 'Digital business card', 'One-page website']
+const STATEMENT = 'A new business gets judged in seconds: on a signboard, a WhatsApp profile, a website. You should look the same, and look good, on every one of them.'.split(' ')
 
 const wrap = 'mx-auto max-w-[1180px] px-5 sm:px-8'
 const band = 'py-[clamp(64px,10vw,112px)]'
@@ -78,7 +75,7 @@ export default function Home() {
                 Fire your branding agency.
               </h1>
               <p className="rise mt-6 max-w-[36ch] text-[19px] font-medium leading-[1.55] sm:text-[20px]" style={{ '--i': 2 } as React.CSSProperties}>
-                Pick a style, answer a few questions. Get your logo, colours, fonts, Instagram posts, WhatsApp kit, business card and a one-page website. Agencies charge ₹30,000 or more for the same work.
+                Pick a style, answer a few questions. Get your logo, colours, fonts, WhatsApp kit, business card and a one-page website.
               </p>
               <div className="rise mt-8 flex flex-col gap-3 sm:flex-row" style={{ '--i': 3 } as React.CSSProperties}>
                 <Button asChild size="xl"><a href="#join">Join the waitlist <ArrowRight aria-hidden="true" /></a></Button>
@@ -120,7 +117,7 @@ export default function Home() {
         <section id="kit" className="scroll-mt-16 bg-blush" aria-labelledby="kit-title">
           <div className={`${wrap} ${band}`}>
             <Sticker className="-rotate-2">{PACKAGE_NAME}</Sticker>
-            <h2 id="kit-title" className={`${h2} mt-4`}>Nine things. <span className="text-saffron-deep">One price.</span></h2>
+            <h2 id="kit-title" className={`${h2} mt-4`}>Six things. <span className="text-saffron-deep">One price.</span></h2>
             <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-5">
               {KIT.map(k => (
                 <li key={k.name} className={`rounded-2xl border-2 border-ink p-5 sm:p-6 ${k.look} ${k.tilt}`}>
